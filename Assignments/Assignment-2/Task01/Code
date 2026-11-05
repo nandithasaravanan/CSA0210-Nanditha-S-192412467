@@ -1,0 +1,45 @@
+
+#include <stdio.h>
+
+int main()
+{
+    int price, qty, senior;
+    double gross, discount, taxable;
+    double tax, total, net;
+
+    printf("Enter price: ");
+    scanf("%d", &price);
+
+    printf("Enter quantity: ");
+    scanf("%d", &qty);
+
+    printf("Senior citizen (1-Yes, 0-No): ");
+    scanf("%d", &senior);
+
+    // Calculate gross amount
+    gross = price * qty;
+
+    // Calculate senior citizen discount
+    discount = senior ? gross * 0.15 : 0.0;
+
+    // Calculate amount after discount
+    taxable = gross - discount;
+
+    // Calculate GST
+    tax = taxable * 0.05;
+
+    // Calculate total amount
+    total = taxable + tax;
+
+    // Apply additional discount
+    net = (total > 1000) ? total - 50 : total;
+
+    printf("\n----- PHARMACY BILL -----\n");
+    printf("Gross Amount = Rs. %.2f\n", gross);
+    printf("Discount     = Rs. %.2f\n", discount);
+    printf("GST          = Rs. %.2f\n", tax);
+    printf("Total        = Rs. %.2f\n", total);
+    printf("Net Amount   = Rs. %.2f\n", net);
+
+    return 0;
+}

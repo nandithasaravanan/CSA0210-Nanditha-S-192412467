@@ -1,0 +1,97 @@
+
+#include <stdio.h>
+
+/* Device positions */
+enum {
+    LIGHT = 0,
+    FAN = 1,
+    AC = 2,
+    HEATER = 3,
+    PUMP = 4
+};
+
+/* TODO 1: Switch ON */
+unsigned char switch_on(unsigned char reg, int dev)
+{
+    return reg | (1u << dev);
+}
+
+/* TODO 2: Switch OFF */
+unsigned char switch_off(unsigned char reg, int dev)
+{
+    return reg & ~(1u << dev);
+}
+
+/* TODO 3: Toggle device */
+unsigned char toggle(unsigned char reg, int dev)
+{
+    return reg ^ (1u << dev);
+}
+
+/* TODO 4: Check device status */
+int is_on(unsigned char reg, int dev)
+{
+    return (reg & (1u << dev)) != 0;
+}
+
+/* Display register in binary */
+void show(unsigned char reg)
+{
+    int bit;
+
+    for (bit = 7; bit >= 0; bit--)
+    {
+        putchar(((reg >> bit) & 1u) ? '1' : '0');
+    }
+
+    putchar('\n');
+}
+
+/* Count devices that are ON */
+int count_on(unsigned char reg)
+{
+    int bit, count = 0;
+
+    for (bit = 0; bit < 8; bit++)
+    {
+        count += (reg >> bit) & 1u;
+    }
+
+    return count;
+}
+
+int main(void)
+{
+    unsigned char reg = 0;
+
+    // Switch ON LIGHT
+    reg = switch_on(reg, LIGHT);
+
+    // Switch ON AC
+    reg = switch_on(reg, AC);
+
+    show(reg);
+
+    // Switch OFF LIGHT
+    reg = switch_off(reg, LIGHT);
+
+    // Switch ON FAN
+    reg = switch_on(reg, FAN);
+
+    show(reg);
+
+    // Display device status
+    printf("AC is %s\n", is_on(reg, AC) ? "ON" : "OFF");
+    printf("PUMP is %s\n", is_on(reg, PUMP) ? "ON" : "OFF");
+
+    // Count active devices
+    printf("Devices ON = %d\n", count_on(reg));
+
+    // Demonstrate toggle
+    reg = toggle(reg, FAN);
+
+    printf("After toggling FAN: ");
+    show(reg);
+
+    return 0;
+}
